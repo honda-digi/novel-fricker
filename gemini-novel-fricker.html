@@ -3,763 +3,218 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ことほぎ - 赤ちゃんの出産祝いギフト</title>
+    <title>海鳴りの標本</title>
+    <!-- Google Fonts: Shippori Mincho -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Noto+Sans+JP:wght@200;300;400;500&family=Zen+Kaku+Gothic+New:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --cream: #FDF8F3;
-            --warm-white: #FFFDFB;
-            --soft-pink: #F5E6E0;
-            --blush: #E8D5CF;
-            --sage: #D4DDD4;
-            --soft-sage: #E8EDE8;
-            --warm-gray: #9B9590;
-            --text-primary: #5C5652;
-            --text-light: #8A8480;
-            --accent-coral: #D4A69A;
-            --accent-mint: #B8CDB8;
-        }
-
-        * {
+        /* ベース設定 */
+        html, body {
+            height: 100%;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
+            background-color: #FFFFFF; /* 限りなく黒に近い、冷たい鉄色 */
+            color: #daddxe; /* わずかに青みがかった白銀色 */
+            font-family: 'Shippori Mincho', 'Yu Mincho', 'Hiragino Mincho ProN', serif;
+            /* 縦書き設定 */
+            writing-mode: vertical-rl;
+            -webkit-writing-mode: vertical-rl;
+            text-orientation: upright;
+            /* スクロール設定（横スクロール） */
+            overflow-x: scroll;
+            overflow-y: hidden;
+            /* スクロールバーを隠す（没入感のため） */
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE/Edge */
+            cursor: default;
         }
 
-        html {
-            scroll-behavior: smooth;
+        body::-webkit-scrollbar {
+            display: none; /* Chrome/Safari */
+        }
+
+        /* 記事コンテナ */
+        article {
+            height: 85vh; /* 画面上下に余白を持たせる */
+            padding: 7.5vh 5vw; /* 上下の余白と左右（開始・終了）の余白 */
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            align-content: flex-start; /* 右詰め */
+            line-height: 2.2; /* ゆったりとした行間 */
+            letter-spacing: 0.12em; /* 文字間を少し開けて空気感を出す */
             font-size: 16px;
         }
 
-        body {
-            font-family: 'Zen Kaku Gothic New', 'Noto Sans JP', sans-serif;
-            font-weight: 300;
-            background: var(--cream);
-            color: var(--text-primary);
-            line-height: 1.9;
-            letter-spacing: 0.05em;
-            overflow-x: hidden;
-        }
-
-        /* Scroll Snap Container */
-        .scroll-container {
-            height: 100vh;
-            overflow-y: scroll;
-            scroll-snap-type: y mandatory;
-            scroll-behavior: smooth;
-        }
-
-        section {
-            min-height: 100vh;
-            scroll-snap-align: start;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 60px 8vw;
-            position: relative;
-        }
-
-        /* Header */
-        header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 100;
-            padding: 24px 8vw;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: linear-gradient(to bottom, var(--cream) 60%, transparent);
-        }
-
-        .logo {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.5rem;
-            font-weight: 300;
-            letter-spacing: 0.15em;
-            color: var(--text-primary);
-        }
-
-        .logo span {
-            font-size: 0.75rem;
-            display: block;
-            font-family: 'Zen Kaku Gothic New', sans-serif;
-            letter-spacing: 0.2em;
-            color: var(--text-light);
-            margin-top: 2px;
-        }
-
-        nav {
-            display: flex;
-            gap: 2.5rem;
-        }
-
-        nav a {
-            font-size: 0.75rem;
-            color: var(--text-light);
-            text-decoration: none;
-            letter-spacing: 0.15em;
-            transition: color 0.3s ease;
-        }
-
-        nav a:hover {
-            color: var(--accent-coral);
-        }
-
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(135deg, var(--warm-white) 0%, var(--soft-pink) 50%, var(--soft-sage) 100%);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -20%;
-            width: 80vw;
-            height: 80vw;
-            background: radial-gradient(circle, rgba(212, 166, 154, 0.15) 0%, transparent 70%);
-            border-radius: 50%;
-            animation: floatSoft 15s ease-in-out infinite;
-        }
-
-        .hero::after {
-            content: '';
-            position: absolute;
-            bottom: -30%;
-            left: -10%;
-            width: 60vw;
-            height: 60vw;
-            background: radial-gradient(circle, rgba(184, 205, 184, 0.12) 0%, transparent 70%);
-            border-radius: 50%;
-            animation: floatSoft 20s ease-in-out infinite reverse;
-        }
-
-        @keyframes floatSoft {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(-20px, 20px) scale(1.02); }
-        }
-
-        .hero-content {
-            text-align: center;
-            position: relative;
-            z-index: 1;
-            max-width: 600px;
-            animation: fadeUp 1.2s ease-out;
-        }
-
-        @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(40px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .hero-badge {
-            display: inline-block;
-            font-size: 0.65rem;
-            letter-spacing: 0.3em;
-            color: var(--accent-coral);
-            padding: 8px 24px;
-            border: 1px solid var(--blush);
-            border-radius: 30px;
-            margin-bottom: 3rem;
-            animation: fadeUp 1.2s ease-out 0.2s both;
-        }
-
-        .hero h1 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(2.5rem, 8vw, 4.5rem);
-            font-weight: 300;
-            letter-spacing: 0.1em;
-            line-height: 1.3;
-            margin-bottom: 2rem;
-            animation: fadeUp 1.2s ease-out 0.4s both;
-        }
-
-        .hero h1 em {
-            font-style: italic;
-            color: var(--accent-coral);
-        }
-
-        .hero p {
-            font-size: 0.9rem;
-            color: var(--text-light);
-            margin-bottom: 3rem;
-            animation: fadeUp 1.2s ease-out 0.6s both;
-        }
-
-        .scroll-indicator {
-            position: absolute;
-            bottom: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            animation: fadeUp 1.2s ease-out 1s both;
-        }
-
-        .scroll-indicator span {
-            font-size: 0.65rem;
-            letter-spacing: 0.2em;
-            color: var(--text-light);
-        }
-
-        .scroll-line {
-            width: 1px;
-            height: 50px;
-            background: linear-gradient(to bottom, var(--blush), transparent);
-            animation: scrollPulse 2s ease-in-out infinite;
-        }
-
-        @keyframes scrollPulse {
-            0%, 100% { opacity: 0.3; transform: scaleY(0.8); }
-            50% { opacity: 1; transform: scaleY(1); }
-        }
-
-        /* Concept Section */
-        .concept {
-            background: var(--warm-white);
-        }
-
-        .concept-content {
-            max-width: 500px;
-            text-align: center;
-        }
-
-        .section-label {
-            font-size: 0.65rem;
-            letter-spacing: 0.4em;
-            color: var(--accent-coral);
-            margin-bottom: 2rem;
-        }
-
-        .concept h2 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(1.5rem, 4vw, 2rem);
-            font-weight: 300;
-            letter-spacing: 0.08em;
-            line-height: 1.8;
-            margin-bottom: 2.5rem;
-        }
-
-        .concept p {
-            font-size: 0.85rem;
-            color: var(--text-light);
-            line-height: 2.2;
-        }
-
-        .decorative-line {
-            width: 40px;
-            height: 1px;
-            background: var(--blush);
-            margin: 2.5rem auto;
-        }
-
-        /* Products Section */
-        .products {
-            background: linear-gradient(180deg, var(--cream) 0%, var(--soft-sage) 100%);
-            padding-top: 100px;
-            padding-bottom: 100px;
-        }
-
-        .products .section-label {
-            margin-bottom: 3rem;
-        }
-
-        .products h2 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(1.3rem, 3vw, 1.8rem);
-            font-weight: 300;
-            letter-spacing: 0.1em;
-            margin-bottom: 4rem;
-            text-align: center;
-        }
-
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
-            max-width: 900px;
-            width: 100%;
-        }
-
-        .product-card {
-            background: var(--warm-white);
-            border-radius: 20px;
-            padding: 30px 25px;
-            text-align: center;
-            transition: transform 0.5s ease, box-shadow 0.5s ease;
-            cursor: pointer;
-        }
-
-        .product-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 60px rgba(92, 86, 82, 0.08);
-        }
-
-        .product-icon {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 20px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-        }
-
-        .product-card:nth-child(1) .product-icon { background: var(--soft-pink); }
-        .product-card:nth-child(2) .product-icon { background: var(--soft-sage); }
-        .product-card:nth-child(3) .product-icon { background: var(--blush); }
-
-        .product-card h3 {
-            font-size: 0.9rem;
-            font-weight: 400;
-            letter-spacing: 0.1em;
-            margin-bottom: 8px;
-        }
-
-        .product-card p {
-            font-size: 0.75rem;
-            color: var(--text-light);
-            margin-bottom: 15px;
-        }
-
-        .product-price {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.1rem;
-            color: var(--accent-coral);
-        }
-
-        /* Features Section */
-        .features {
-            background: var(--warm-white);
-        }
-
-        .features-content {
-            max-width: 700px;
-            text-align: center;
-        }
-
-        .features h2 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(1.3rem, 3vw, 1.8rem);
-            font-weight: 300;
-            letter-spacing: 0.1em;
-            margin-bottom: 4rem;
-        }
-
-        .feature-list {
-            display: flex;
-            flex-direction: column;
-            gap: 3rem;
-        }
-
-        .feature-item {
-            display: flex;
-            align-items: center;
-            gap: 2rem;
-            text-align: left;
-        }
-
-        .feature-item:nth-child(even) {
-            flex-direction: row-reverse;
-            text-align: right;
-        }
-
-        .feature-number {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 3rem;
-            font-weight: 300;
-            color: var(--blush);
-            line-height: 1;
-            min-width: 60px;
-        }
-
-        .feature-text h3 {
-            font-size: 0.9rem;
-            font-weight: 400;
-            letter-spacing: 0.1em;
-            margin-bottom: 8px;
-        }
-
-        .feature-text p {
-            font-size: 0.8rem;
-            color: var(--text-light);
-        }
-
-        /* Testimonials Section */
-        .testimonials {
-            background: linear-gradient(135deg, var(--soft-pink) 0%, var(--cream) 50%, var(--soft-sage) 100%);
-        }
-
-        .testimonials-content {
-            max-width: 550px;
-            text-align: center;
-        }
-
-        .testimonials h2 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(1.3rem, 3vw, 1.8rem);
-            font-weight: 300;
-            letter-spacing: 0.1em;
-            margin-bottom: 3rem;
-        }
-
-        .testimonial-card {
-            background: rgba(255, 253, 251, 0.8);
-            backdrop-filter: blur(10px);
-            border-radius: 24px;
-            padding: 40px;
-            margin-bottom: 2rem;
-        }
-
-        .testimonial-card p {
-            font-size: 0.9rem;
-            line-height: 2;
-            margin-bottom: 1.5rem;
-            font-style: italic;
-        }
-
-        .testimonial-author {
-            font-size: 0.75rem;
-            color: var(--text-light);
-            letter-spacing: 0.1em;
-        }
-
-        .stars {
-            color: var(--accent-coral);
-            font-size: 0.8rem;
-            letter-spacing: 0.2em;
-            margin-bottom: 1rem;
-        }
-
-        /* CTA Section */
-        .cta {
-            background: var(--warm-white);
-            position: relative;
-        }
-
-        .cta::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23E8D5CF' fill-opacity='0.15'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-            opacity: 0.5;
-        }
-
-        .cta-content {
-            position: relative;
-            z-index: 1;
-            max-width: 500px;
-            text-align: center;
-        }
-
-        .cta h2 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(1.5rem, 4vw, 2.2rem);
-            font-weight: 300;
-            letter-spacing: 0.08em;
-            line-height: 1.6;
-            margin-bottom: 2rem;
-        }
-
-        .cta p {
-            font-size: 0.85rem;
-            color: var(--text-light);
-            margin-bottom: 2.5rem;
-        }
-
-        .btn-primary {
-            display: inline-block;
-            padding: 18px 50px;
-            background: var(--text-primary);
-            color: var(--warm-white);
-            font-size: 0.75rem;
-            letter-spacing: 0.2em;
-            text-decoration: none;
-            border-radius: 50px;
-            transition: all 0.4s ease;
-        }
-
-        .btn-primary:hover {
-            background: var(--accent-coral);
-            transform: translateY(-2px);
-            box-shadow: 0 15px 40px rgba(212, 166, 154, 0.3);
-        }
-
-        .btn-secondary {
-            display: block;
-            margin-top: 1.5rem;
-            font-size: 0.7rem;
-            color: var(--text-light);
-            text-decoration: none;
-            letter-spacing: 0.15em;
-            transition: color 0.3s ease;
-        }
-
-        .btn-secondary:hover {
-            color: var(--accent-coral);
-        }
-
-        /* Footer */
-        footer {
-            background: var(--cream);
-            padding: 60px 8vw;
-            text-align: center;
-            border-top: 1px solid var(--soft-pink);
-        }
-
-        .footer-logo {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.2rem;
-            font-weight: 300;
-            letter-spacing: 0.15em;
-            margin-bottom: 1.5rem;
-        }
-
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-        }
-
-        .footer-links a {
-            font-size: 0.7rem;
-            color: var(--text-light);
-            text-decoration: none;
-            letter-spacing: 0.1em;
-            transition: color 0.3s ease;
-        }
-
-        .footer-links a:hover {
-            color: var(--accent-coral);
-        }
-
-        .copyright {
-            font-size: 0.65rem;
-            color: var(--text-light);
-            letter-spacing: 0.1em;
-        }
-
-        /* Responsive */
+        /* モバイル対応 */
         @media (max-width: 768px) {
-            nav {
-                display: none;
-            }
-
-            section {
-                padding: 60px 6vw;
-            }
-
-            .product-grid {
-                grid-template-columns: 1fr;
-                max-width: 300px;
-            }
-
-            .feature-item,
-            .feature-item:nth-child(even) {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .footer-links {
-                flex-direction: column;
-                gap: 1rem;
+            article {
+                height: 82vh;
+                padding: 9vh 20px;
+                font-size: 15px;
+                line-height: 2.0;
             }
         }
 
-        /* Animations on Scroll */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
+        /* タイトル・見出し */
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 500;
+            margin: 0 0 0 4rem; /* 左マージン（縦書きでは下方向の余白） */
+            padding-top: 10vh; /* タイトルの位置調整 */
+            color: #CCCCCC;
+            letter-spacing: 0.3em;
         }
 
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
+        /* 段落 */
+        p {
+            margin: 0 0 0 1.8em; /* 段落ごとの間隔 */
+            text-indent: 1em; /* 一字下げ */
+            text-align: justify;
+        }
+
+        /* 鉤括弧の微調整 */
+        .dialogue {
+            margin-left: 0.5em; /* 会話文を少し詰めるかどうかは好みですが、今回は揃えます */
+        }
+
+        /* 特定の強調や比喩表現を少しだけ目立たせる（オプション） */
+        .chill {
+            color: #eef2f5;
+            text-shadow: 0 0 2px rgba(255, 255, 255, 0.2);
+        }
+
+        /* 最終行の余韻 */
+        .end-marker {
+            margin-top: 4rem;
+            font-size: 0.8rem;
+            opacity: 0.6;
+            text-align: right; /* 縦書きでは下揃えになる */
+        }
+
+        /* フェードインアニメーション */
+        article {
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; filter: blur(2px); }
+            100% { opacity: 1; filter: blur(0); }
+        }
+
+        /* 選択時の色反転を美しく */
+        ::selection {
+            background: #4a5568;
+            color: #fff;
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="logo">
-            ことほぎ
-            <span>KOTOHOGI</span>
-        </div>
-        <nav>
-            <a href="#concept">コンセプト</a>
-            <a href="#products">商品一覧</a>
-            <a href="#features">選ばれる理由</a>
-            <a href="#contact">お問い合わせ</a>
-        </nav>
-    </header>
 
-    <div class="scroll-container">
-        <section class="hero">
-            <div class="hero-content">
-                <div class="hero-badge">BABY GIFT COLLECTION</div>
-                <h1>生まれてきてくれて<br><em>ありがとう</em></h1>
-                <p>大切な人への贈りもの。<br>やさしさを届ける、出産祝いギフト。</p>
-            </div>
-            <div class="scroll-indicator">
-                <span>SCROLL</span>
-                <div class="scroll-line"></div>
-            </div>
-        </section>
+<article>
+    <h1>海鳴りの標本</h1>
 
-        <section class="concept" id="concept">
-            <div class="concept-content fade-in">
-                <div class="section-label">CONCEPT</div>
-                <h2>赤ちゃんとご家族に<br>やさしい時間を届けたい</h2>
-                <div class="decorative-line"></div>
-                <p>
-                    新しい命の誕生は、かけがえのない喜び。<br>
-                    その特別な瞬間に寄り添う贈りものを、<br>
-                    ひとつひとつ心を込めてお届けします。
-                </p>
-            </div>
-        </section>
+    <p>鳴海ニュータウンの夜は、水底のように静まり返っている。<br>
+    九月の終わり、秋雨前線が過ぎ去った後の大気は、あますことなく濾過され、研ぎ澄まされていた。街灯は青白い光の柱を立て、均等に配置された戸建ての家々を標本のように照らし出している。家々はまぶたを閉じ、生活という雑音をその内側に真空パックして、ただ朝を待っていた。</p>
 
-        <section class="products" id="products">
-            <div class="section-label">PRODUCTS</div>
-            <h2>人気のギフトセット</h2>
-            <div class="product-grid">
-                <div class="product-card fade-in">
-                    <div class="product-icon">🧸</div>
-                    <h3>はじめてのおともだち</h3>
-                    <p>オーガニックコットンのぬいぐるみと<br>スタイのセット</p>
-                    <div class="product-price">¥8,800</div>
-                </div>
-                <div class="product-card fade-in">
-                    <div class="product-icon">🍼</div>
-                    <h3>すくすくセット</h3>
-                    <p>哺乳瓶・おくるみ・<br>ガーゼハンカチの詰め合わせ</p>
-                    <div class="product-price">¥12,000</div>
-                </div>
-                <div class="product-card fade-in">
-                    <div class="product-icon">👶</div>
-                    <h3>プレミアムボックス</h3>
-                    <p>名入れベビー服・ブランケット・<br>メモリアルフレーム</p>
-                    <div class="product-price">¥18,500</div>
-                </div>
-            </div>
-        </section>
+    <p>僕の運転するシルバーの軽自動車は、この巨大な静寂を切り裂くメスだった。<br>
+    助手席にはリカがいる。五年ぶりに会う彼女は、記憶の中よりも輪郭が鋭利で、まるで薄いガラス細工のように脆く、美しく見えた。</p>
 
-        <section class="features" id="features">
-            <div class="features-content">
-                <div class="section-label">WHY CHOOSE US</div>
-                <h2>選ばれる３つの理由</h2>
-                <div class="feature-list">
-                    <div class="feature-item fade-in">
-                        <div class="feature-number">01</div>
-                        <div class="feature-text">
-                            <h3>オーガニック素材</h3>
-                            <p>赤ちゃんの肌にやさしい、厳選された天然素材のみを使用</p>
-                        </div>
-                    </div>
-                    <div class="feature-item fade-in">
-                        <div class="feature-number">02</div>
-                        <div class="feature-text">
-                            <h3>無料ギフトラッピング</h3>
-                            <p>心をこめた美しいラッピングで、特別な贈りものに</p>
-                        </div>
-                    </div>
-                    <div class="feature-item fade-in">
-                        <div class="feature-number">03</div>
-                        <div class="feature-text">
-                            <h3>最短翌日お届け</h3>
-                            <p>急なお祝いにも対応。全国送料無料でお届けします</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+    <p>「海鳴り、聞こえる？」</p>
 
-        <section class="testimonials">
-            <div class="testimonials-content">
-                <div class="section-label">VOICE</div>
-                <h2>お客様の声</h2>
-                <div class="testimonial-card fade-in">
-                    <div class="stars">★★★★★</div>
-                    <p>「友人への出産祝いに贈りました。<br>とても喜んでもらえて、赤ちゃんも<br>気持ちよさそうに包まれていました」</p>
-                    <div class="testimonial-author">― 東京都 M.S様</div>
-                </div>
-            </div>
-        </section>
+    <p>リカが言った。彼女の声は、硬質な氷をグラスに落としたときのような、涼やかな響きを持っていた。<br>
+    窓を少し開けると、ゴオオ、ゴオオ、という低い振動が車内の空気を震わせた。それは波の音というより、巨大な地下空洞を風が通り抜けるような、無機質で重厚な響きだった。</p>
 
-        <section class="cta" id="contact">
-            <div class="cta-content fade-in">
-                <div class="section-label">GIFT SELECTION</div>
-                <h2>大切な人への贈りもの、<br>お手伝いします</h2>
-                <p>ご予算やお相手に合わせて、<br>最適なギフトをご提案いたします。</p>
-                <a href="#" class="btn-primary">商品を見る</a>
-                <a href="#" class="btn-secondary">ギフト診断を受ける →</a>
-            </div>
-        </section>
+    <p>「怒っとるみたいやね」<br>
+    「怒ってるんじゃない。何かを洗ってる音だよ」</p>
 
-        <footer>
-            <div class="footer-logo">ことほぎ</div>
-            <div class="footer-links">
-                <a href="#">会社概要</a>
-                <a href="#">特定商取引法</a>
-                <a href="#">プライバシーポリシー</a>
-                <a href="#">お問い合わせ</a>
-                <a href="#">Instagram</a>
-            </div>
-            <div class="copyright">© 2025 KOTOHOGI All Rights Reserved.</div>
-        </footer>
-    </div>
+    <p>僕が答えると、リカは小さく息を吐くように笑った。彼女の膝の上には、冷たい金属光沢を放つデジタルカメラが鎮座している。レンズは黒曜石の瞳のように、この夜の全てを記録しようと待ち構えていた。</p>
 
-    <script>
-        // Intersection Observer for fade-in animations
-        const observerOptions = {
-            root: document.querySelector('.scroll-container'),
-            threshold: 0.2,
-            rootMargin: '0px'
-        };
+    <p>車は海岸線沿いの高台へ向かう。滑らかなアスファルトの上を、タイヤが絹を裂くような音を立てて進む。<br>
+    カーブを曲がる。ヘッドライトが照らし出したガードレールは、幾何学的な白線として闇に浮かび上がり、その向こうの虚空へ続く滑走路に見えた。ハンドルを切り損ねれば、僕たちはそのまま重力から解放され、永遠の落下を始められるかもしれない。</p>
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, observerOptions);
+    <p>その想像は、鎮痛剤のように静かに僕の脳裏に広がった。<br>
+    消えてしまいたい、という欲求は、汚れたものを洗い流したいという潔癖な願いに似ていた。それは不純物を取り除き、ただ透明な存在になりたいという祈りだ。</p>
 
-        document.querySelectorAll('.fade-in').forEach(el => {
-            observer.observe(el);
-        });
+    <p>けれど、僕の体は精密な機械のように脈打ち続けていた。<br>
+    ハンドルを握る指先は微かに冷たく、呼吸をするたびに肺は正確に酸素と二酸化炭素を交換している。精神が限りなく透明に近づこうとしても、心臓はメトロノームのように時を刻み、僕をこの世界に留め続けていた。</p>
 
-        // Smooth scroll for navigation
-        document.querySelectorAll('nav a').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth' });
-                }
-            });
-        });
-    </script>
+    <p>「ここで止めて」</p>
+
+    <p>高台の公園の脇で、リカが言った。<br>
+    エンジンを切ると、世界から人工的なノイズが消え、純度の高い闇と海鳴りだけが残った。</p>
+
+    <p>二人は車を降り、公園の入り口に立つ自動販売機の前へ歩み寄った。<br>
+    暗闇に発光するその箱は、現代の祭壇のように青白く輝いている。<br>
+    僕とリカは、示し合わせたわけでもないのに、同時にポケットから硬貨を取り出した。チャリ、という金属音が完全に重なる。<br>
+    硬貨を投入するタイミング、商品を選ぶ指の角度、そしてボタンを押す指先の速度。それら全てが、まるで連弾をするピアニストのように完璧なユニゾンを描いた。<br>
+    ガタン。<br>
+    二つの缶コーヒーが同時に取り出し口に転がり落ちる。<br>
+    僕たちは顔を見合わせることなく、ただ同じ温度の缶を握りしめた。その一瞬、僕たちの心拍数は同期し、二つの個体ではなく一つのシステムとして機能していた。言葉など不要だった。かつて僕たちは、こうして世界と同じ呼吸をしていたのだ。</p>
+
+    <p>リカはフェンスに寄りかかり、海を見下ろした。<br>
+    潮風が吹き付ける中、彼女は無意識に手すりを掴もうとして、その手が空中で止まる。<br>
+    白く塗装された鉄パイプには、赤錆が浮いていた。それは経年劣化というよりは、赤い星屑が付着しているかのように見えた。<br>
+    僕はその錆びた冷たさに魅入られ、躊躇なく掌を押し付けた。酸化した鉄の匂いが、僕の皮膚と同化していく。崩れゆくものへの親近感。このまま僕も錆びついて、風景の一部になればいい。</p>
+
+    <p>しかし、リカは違った。<br>
+    彼女は指先についた僅かな錆の粉を認めると、眉をほんの数ミリだけ歪めた。そしてポケットから出した純白のティッシュで、指先を丁寧に、執拗なまでに拭い取った。<br>
+    彼女は「汚れ」を拒絶したのだ。<br>
+    そのあまりに潔癖で事務的な動作が、僕たちの間に横たわる絶対的な断絶を可視化した。彼女は明日も明後日も、この手で生活を磨き上げ、汚れを拭い去って生きていく。僕はその汚れにこそ安らぎを感じているというのに。</p>
+
+    <p>リカは綺麗になった指でデジタルカメラを構えた。</p>
+
+    <p>「こっち向いて」<br>
+    「何も映らないよ、こんな暗闇じゃ」<br>
+    「ううん、映るよ。光がない場所にある、本当の形が」</p>
+
+    <p>カシャッ。<br>
+    乾いた電子音が鳴り、青白いフラッシュが夜を一瞬だけ白昼に変えた。<br>
+    リカの顔が石膏像のように白く浮かび上がる。その瞳の奥には、僕たちがかつて共有していた「魔法」が、氷漬けにされたまま眠っているのが見えた。</p>
+
+    <p>記憶の中の夏。この街はプリズムだった。<br>
+    入道雲は白い巨塔で、蝉の声は空気を振動させる光の粒子だった。僕とリカにとって世界は単純な数式で構成されていて、解けない謎などひとつもなかった。傷ついても涙はすぐに乾き、僕たちは水晶のように傷ひとつない魂を持っていた。<br>
+    あの頃、僕たちは世界の観測者だった。</p>
+
+    <p>けれど今、目の前にいるリカは、日々の労働で摩耗した指先を隠すようにポケットに入れ、僕は東京のビル風に削られて表情を失った顔で立っている。<br>
+    プリズムは砕け、光は散乱してしまった。</p>
+
+    <p>「ねえ、結婚するんだ」</p>
+
+    <p>リカが淡々と言った。その言葉は、静水に落とした小石のように、波紋を広げることなく深く沈んでいった。</p>
+
+    <p>「……そっか」</p>
+
+    <p>言葉は白い息となって空気に溶け、すぐに消えた。<br>
+    彼女は僕を見ていない。ファインダー越しに、何もない暗黒の海を見つめている。彼女はこの街のシステムの一部となり、淡々と、しかし確実に未来を構築していくのだろう。<br>
+    僕はエラーを起こしたプログラムだ。そして今も、初期化されることをどこかで望んでいる。</p>
+
+    <p>僕たちの間には、透明な断絶があった。<br>
+    好きだ、という感情はまだ、胸の奥にある。けれどそれは熱を帯びた炎ではなく、深い青色をした硬い宝石のようなものだった。触れても熱くはないが、決して砕けることもない。<br>
+    僕の「好き」は真空管に封じ込められた過去の光で、彼女の「好き」は明日を照らすための蛍光灯なのだ。</p>
+
+    <p>「最後にもう一枚」</p>
+
+    <p>リカがカメラを僕に向けた。<br>
+    僕は拒まなかった。彼女のデジタルカメラのセンサーが、僕という存在を0と1の信号に変換する。僕はデータとなり、劣化することのない電子の海で永遠に保存される。それは一種の死であり、僕が望んでいた、最も清潔な救済かもしれない。</p>
+
+    <p>カシャッ。</p>
+
+    <p>再び閃光が視神経を焼き、世界が白く反転した。<br>
+    残像の中で、リカが微笑んだ気がした。それは全てを見透かす聖女のようでもあり、感情を持たないアンドロイドのようでもあった。</p>
+
+    <p>「じゃあ、帰ろうか」</p>
+
+    <p>彼女が言う。<br>
+    僕は頷き、凍えた指先でキーを握りしめる。金属の冷たさが、指先の皮膚を通して骨まで浸透してくる。<br>
+    海鳴りは相変わらず、一定のリズムで世界の底を揺らしている。<br>
+    僕はその振動を骨格で感じながら、静かに、機械的な正確さで車のドアを開けた。<br>
+    閉ざされた車内にはまだ僕たちの体温がわずかに残っていて、それがどうしようもなく、僕たちが生き物であることを証明していた。</p>
+
+    <div class="end-marker">（了）</div>
+</article>
+
 </body>
 </html>
