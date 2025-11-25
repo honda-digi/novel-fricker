@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>海鳴りのなかで</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-light: #f7f5f0;
+      --bg-dark: #edeae3;
+      --text-primary: #2c2a26;
+      --text-muted: #8a877e;
+      --border: #d8d4ca;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      background: var(--bg-light);
+    }
+
+    body {
+      font-family: 'Shippori Mincho', 'YuMincho', 'Yu Mincho', '游明朝', 'Hiragino Mincho ProN', serif;
+      color: var(--text-primary);
+      line-height: 1.9;
+      letter-spacing: 0.05em;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    /* メインコンテナ */
+    .novel-container {
+      height: 100vh;
+      height: 100dvh;
+      overflow-y: scroll;
+      scroll-snap-type: y mandatory;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* 各ページ */
+    .page {
+      min-height: 100vh;
+      min-height: 100dvh;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 20px 48px;
+      position: relative;
+    }
+
+    .page:nth-child(odd) {
+      background: var(--bg-light);
+    }
+
+    .page:nth-child(even) {
+      background: var(--bg-dark);
+    }
+
+    /* 縦書きテキストエリア */
+    .text-area {
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      max-height: calc(100vh - 100px);
+      max-height: calc(100dvh - 100px);
+      width: auto;
+      max-width: 100%;
+      overflow: hidden;
+    }
+
+    /* セクション番号 */
+    .section-number {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-bottom: 1.5em;
+      letter-spacing: 0.2em;
+    }
+
+    /* 本文 */
+    .content {
+      font-size: 0.95rem;
+      text-align: justify;
+    }
+
+    .content p {
+      text-indent: 1em;
+      margin: 0;
+    }
+
+    .content p:first-of-type {
+      text-indent: 0;
+    }
+
+    .content p + p {
+      margin-top: 0.3em;
+    }
+
+    /* タイトルページ */
+    .title-page {
+      text-align: center;
+    }
+
+    .title-page .main-title {
+      writing-mode: vertical-rl;
+      font-size: 1.8rem;
+      font-weight: 500;
+      letter-spacing: 0.35em;
+      color: var(--text-primary);
+    }
+
+    .title-page .subtitle {
+      writing-mode: horizontal-tb;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      letter-spacing: 0.25em;
+      margin-top: 2.5rem;
+    }
+
+    .title-page .scroll-hint {
+      position: absolute;
+      bottom: 50px;
+      writing-mode: horizontal-tb;
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      letter-spacing: 0.1em;
+      animation: fade-pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes fade-pulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+
+    /* 終わりページ */
+    .end-page {
+      text-align: center;
+    }
+
+    .end-mark {
+      writing-mode: vertical-rl;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      letter-spacing: 0.4em;
+    }
+
+    /* ページ番号 */
+    .page-number {
+      position: absolute;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+    }
+
+    /* プログレスバー */
+    .progress-container {
+      position: fixed;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 100px;
+      width: 2px;
+      background: var(--border);
+      z-index: 100;
+      border-radius: 1px;
+    }
+
+    .progress-bar {
+      width: 100%;
+      background: var(--text-muted);
+      border-radius: 1px;
+      transition: height 0.3s ease;
+    }
+
+    /* ダークモード */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-light: #1a1918;
+        --bg-dark: #222120;
+        --text-primary: #e0dcd4;
+        --text-muted: #6e6a62;
+        --border: #3a3834;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="progress-container">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <main class="novel-container" id="novelContainer">
+
+    <!-- タイトルページ -->
+    <section class="page title-page">
+      <h1 class="main-title">海鳴りのなかで</h1>
+      <p class="subtitle">短編小説</p>
+      <p class="scroll-hint">↓ スクロール</p>
+      <span class="page-number">1 / 19</span>
+    </section>
+
+    <!-- 一 -->
+    <section class="page">
+      <div class="text-area">
+        <div class="section-number">一</div>
+        <div class="content">
+          <p>夜の海は息をしている。</p>
+          <p>寄せては返す波の音が、車のフロントガラス越しに聞こえる。いや、聞こえるというより、身体の奥のほうで鳴っている。骨のなかで反響して、内臓をそっと揺らすような、そういう種類の音だった。</p>
+          <p>助手席のリカが窓を少し開けると、九月の終わりの潮の匂いが入り込んできた。それは夏の残骸を焼いたあとの灰みたいな匂いで、甘さと腐敗が薄く混じっていた。匂いには重さがある、と僕は思った。この匂いは、たぶん錆びた自転車のチェーンくらいの重さだ。</p>
+        </div>
+      </div>
+      <span class="page-number">2 / 19</span>
+    </section>
+
+    <!-- 一・続き -->
+    <section class="page">
+      <div class="text-area">
+        <div class="content">
+          <p>「海鳴り、聞こえる？」</p>
+          <p>リカがそう言って、僕のほうを見た。彼女の横顔を、街灯のオレンジ色の光が撫でていく。その光は彼女の頬骨のあたりで一瞬躊躇して、それから髪の毛のなかに吸い込まれていった。</p>
+          <p>「聞こえるよ」</p>
+          <p>僕は答えながら、ハンドルを握る自分の手を見た。東京で過ごすうちに、指先の皮膚が薄くなっていた。この街にいた頃は、もっと手が荒れていた気がする。潮風と、部活と、名前もつけられないたくさんのものに、毎日触れていたからだ。</p>
+        </div>
+      </div>
+      <span class="page-number">3 / 19</span>
+    </section>
+
+    <!-- 一・続き2 -->
+    <section class="page">
+      <div class="text-area">
+        <div class="content">
+          <p>鳴海ニュータウンの夜は、音を吸って太っていく。郊外の戸建てが並ぶ坂道を下りてきた僕らは、今、防波堤のそばに車を停めている。エンジンは切らずにいた。切ってしまうと、何かが決定的に終わってしまう気がしたから。</p>
+        </div>
+      </div>
+      <span class="page-number">4 / 19</span>
+    </section>
+
+    <!-- 二 -->
+    <section class="page">
+      <div class="text-area">
+        <div class="section-number">二</div>
+        <div class="content">
+          <p>リカに会うのは、七年ぶりだった。</p>
+          <p>夕方、実家の近くのコンビニで偶然すれ違ったとき、僕は一瞬、彼女だとわからなかった。高校の頃より髪が短くなっていて、化粧も、服装も、声の出し方も、どこか丁寧に整えられていた。でも笑い方だけは変わっていなかった。唇の端がほんの少し歪む、あの笑い方。</p>
+          <p>「帰ってきとったん？」</p>
+          <p>彼女はそう言って、僕のバスケットの中身をちらりと見た。カップ麺と缶ビールと、電池。一人で過ごす夜の完璧な三点セットだ。</p>
+        </div>
+      </div>
+      <span class="page-number">5 / 19</span>
+    </section>
+
+    <!-- 二・続き -->
+    <section class="page">
+      <div class="text-area">
+        <div class="content">
+          <p>「ちょっとだけ。親の法事で」</p>
+          <p>「そう」</p>
+          <p>それだけで、彼女には全部伝わったようだった。父親が死んだこと。この街を出ていったこと。戻ってこないつもりだったこと。</p>
+          <p>「夜、暇？」</p>
+          <p>リカはそう訊いた。まるで昨日も会っていたみたいな口調で。</p>
+        </div>
+      </div>
+      <span class="page-number">6 / 19</span>
+    </section>
+
+    <!-- 三 -->
+    <section class="page">
+      <div class="text-area">
+        <div class="section-number">三</div>
+        <div class="content">
+          <p>十八歳の夏を、僕はときどき夢に見る。</p>
+          <p>あの頃、僕らはよく海に来た。リカと、それから何人かの友達と、誰かの兄貴から借りた軽自動車に乗って、夜中に抜け出した。海はいつも真っ暗で、波の音だけが異様に大きくて、僕らはそれを「海の呼吸」と呼んでいた。</p>
+          <p>リカが持っていたデジタルカメラで、僕らは何百枚も写真を撮った。フラッシュが焚かれるたびに、闇が一瞬だけ裂けて、砂浜や防波堤や、誰かの笑っている顔が浮かび上がった。</p>
+        </div>
+      </div>
+      <span class="page-number">7 / 19</span>
+    </section>
+
+    <!-- 三・続き -->
+    <section class="page">
+      <div class="text-area">
+        <div class="content">
+          <p>あのカメラはまだ、画素数が荒くて、撮った写真は全部どこかぼんやりしていた。でもそのぼんやりが、逆に記憶に似ていた。思い出すとき、人はいつも細部を失くすから。</p>
+          <p>「あのカメラ、まだ持っとる？」</p>
+          <p>僕が訊くと、リカは少し笑った。</p>
+          <p>「持っとるよ。でも動かん。電池入れても」</p>
+          <p>「壊れたんか」</p>
+          <p>「壊れたんかな。わからん。でも、もうええんよ。写真は全部、ここにあるけん」</p>
+          <p>彼女は自分のこめかみを指先で軽く叩いた。</p>
+        </div>
+      </div>
+      <span class="page-number">8 / 19</span>
+    </section>
+
+    <!-- 四 -->
+    <section class="page">
+      <div class="text-area">
+        <div class="section-number">四</div>
+        <div class="content">
+          <p>僕がこの街を出たのは、息ができなくなったからだ。</p>
+          <p>父親が死んで、母親は少しずつ自分のなかに沈んでいって、家には湿った沈黙だけが溜まっていった。仏壇の線香の匂いが家中に染み込んで、それは祈りというよりも、呪いみたいだった。壁が僕を見ていた。床が僕の足音を記憶していた。台所の蛇口が、夜中に勝手に涙を流した。</p>
+          <p>逃げなければ、と思った。ここにいたら、僕も沈んでいく。父親の後を追うように、音もなく。</p>
+        </div>
+      </div>
+      <span class="page-number">9 / 19</span>
+    </section>
+
+    <!-- 四・続き -->
+    <section class="page">
+      <div class="text-area">
+        <div class="content">
+          <p>東京に出て、就職して、休日は一人で映画を観たり本を読んだりした。友達と呼べる人は何人かできたけれど、彼らには僕の過去を話さなかった。話したところで、理解されるとは思えなかった。海鳴りを聴いて育った人間と、そうでない人間は、たぶん、聞こえる音が違うのだ。</p>
+        </div>
+      </div>
+      <span class="page-number">10 / 19</span>
+    </section>
+
+    <!-- 五 -->
+    <section class="page">
+      <div class="text-area">
+        <div class="section-number">五</div>
+        <div class="content">
+          <p>「なんで戻ってこんかったん？」</p>
+          <p>リカの声には、責めるような色はなかった。ただ純粋に、不思議がっているようだった。</p>
+          <p>「戻れんかった。ここには、俺を知っとるものが多すぎる」</p>
+          <p>「ものって」</p>
+          <p>「家とか、道とか、あの神社の石段とか。全部俺のこと覚えとる。忘れさせてくれん」</p>
+          <p>リカはしばらく黙っていた。それから小さく頷いた。</p>
+          <p>「うちは逆やわ。ここにおらんと、自分が誰かわからんくなる」</p>
+          <p>「ここにおったら、俺は自分が何者かわからんくなる」</p>
+          <p>僕らは同じものを別の方向から見ていた。海鳴りが、その隙間を埋めるように響いていた。</p>
+        </div>
+      </div>
+      <span class="page-number">11 / 19</span>
+    </section>
+
+    <!-- 六 -->
+    <section class="page">
+      <div class="text-area">
+        <div class="section-number">六</div>
+        <div class="content">
+          <p>リカはこの街で働いている。地元の信用金庫に勤めて、休日は母親の介護を手伝っている。結婚はしていない。する気もあまりないらしい。</p>
+          <p>「別に不幸とかじゃないよ。ただ、こういうもんやろうって」</p>
+          <p>彼女はそう言って、缶コーヒーを一口飲んだ。自販機で買った、甘ったるいカフェオレ。高校のときも、彼女はいつもこれを飲んでいた。</p>
+          <p>「俺は」</p>
+          <p>僕は言いかけて、やめた。何を言おうとしていたのか、自分でもわからなかった。</p>
+        </div>
+      </div>
+      <span class="page-number">12 / 19</span>
+    </section>
+
+    <!-- 六・続き -->
+    <section class="page">
+      <div class="text-area">
+        <div class="content">
+          <p>東京にいる僕は、たぶん、まだ何者でもなかった。仕事は続けているけれど、それは生活を維持するためで、情熱とか使命感とか、そういうものは持てなかった。土曜日の午後、カーテンを閉めたまま布団に横たわっていると、ときどき、このまま消えてしまいたいと思った。</p>
+          <p>消えるというのは、死ぬということではなくて、もっと透明になって、誰にも見えなくなって、波の音だけになってしまうような、そういうことだった。</p>
+          <p>でも身体は消えなかった。腹は減ったし、喉は渇いたし、爪は伸びた。生きることをやめようとしても、身体は勝手に続いていった。</p>
+        </div>
+      </div>
+      <span class="page-number">13 / 19</span>
+    </section>
+
+    <!-- 七 -->
+    <section class="page">
+      <div class="text-area">
+        <div class="section-number">七</div>
+        <div class="content">
+          <p>「リカ」</p>
+          <p>「ん？」</p>
+          <p>「俺、昔、お前のこと好きやったよ」</p>
+          <p>言ってしまってから、自分の声が車内に沈んでいくのを聞いた。海鳴りが一瞬大きくなって、また遠のいた。</p>
+          <p>リカは驚かなかった。たぶん、知っていたのだ。</p>
+          <p>「うちも。たぶん」</p>
+          <p>「たぶん？」</p>
+          <p>「うん。たぶん」</p>
+          <p>彼女は窓の外を見ていた。防波堤のコンクリートに、波が白い線を描いては消していた。</p>
+        </div>
+      </div>
+      <span class="page-number">14 / 19</span>
+    </section>
+
+    <!-- 七・続き -->
+    <section class="page">
+      <div class="text-area">
+        <div class="content">
+          <p>「でもな、うちら、無理やったと思う。あの頃も。今も」</p>
+          <p>「わかっとる」</p>
+          <p>「うちはここから出れん。出たくない。でもあんたは出ていかなあかんかった。それは正しかったと思う」</p>
+          <p>正しい。その言葉は、僕の胸のどこかで小さな棘になった。正しかったかどうかなんて、わからない。ただ僕は、生き延びるためにそうしただけだ。</p>
+        </div>
+      </div>
+      <span class="page-number">15 / 19</span>
+    </section>
+
+    <!-- 八〜九 -->
+    <section class="page">
+      <div class="text-area">
+        <div class="section-number">八</div>
+        <div class="content">
+          <p>車を降りて、僕らは少しだけ防波堤を歩いた。</p>
+          <p>九月の風は、もう冷たかった。夏の記憶を剥がしていくような風だった。</p>
+          <p>「送ってく」</p>
+          <p>僕が言うと、リカは首を横に振った。</p>
+          <p>「ここでええ。歩いて帰れるけん」</p>
+          <p>「また帰ってきたら、連絡して」</p>
+          <p>「うん」</p>
+          <p>「嘘つくな」</p>
+          <p>「嘘じゃない」</p>
+          <p>嘘だった。たぶん、僕はもうこの街には帰ってこない。</p>
+        </div>
+      </div>
+      <span class="page-number">16 / 19</span>
+    </section>
+
+    <!-- 九〜十 -->
+    <section class="page">
+      <div class="text-area">
+        <div class="content">
+          <p>「元気でな」</p>
+          <p>彼女はそう言って、背を向けた。カーディガンの裾が風に揺れて、街灯の光のなかを歩いていった。その後ろ姿を、僕はずっと見ていた。彼女が角を曲がって見えなくなるまで。</p>
+          <p>一人になった車のなかで、僕はしばらく動けなかった。</p>
+          <p>ダッシュボードの上に、デジタルカメラがあった。父親の遺品を整理していたら、出てきた。昔、父親が使っていたカメラ。電池を入れたら、まだ動いた。</p>
+          <p>僕はカメラを手に取って、窓の外を撮った。フラッシュが焚かれて、闇が一瞬だけ裂けた。</p>
+        </div>
+      </div>
+      <span class="page-number">17 / 19</span>
+    </section>
+
+    <!-- 十一〜十二 -->
+    <section class="page">
+      <div class="text-area">
+        <div class="content">
+          <p>実家に着いたのは、深夜の二時過ぎだった。</p>
+          <p>玄関を開けると、線香の匂いがした。父親が死んでから三年経つのに、この匂いはまだ家に染み付いている。</p>
+          <p>ベッドに横たわって、天井を見た。天井には、小さな染みがあった。子供の頃から、僕はこの染みを見て眠りについていた。</p>
+          <p>目を閉じると、リカの横顔が浮かんだ。僕らは、たぶん、お互いを好きだった。今も。でも好きだということと、一緒にいられるということは、同じではなかった。</p>
+        </div>
+      </div>
+      <span class="page-number">18 / 19</span>
+    </section>
+
+    <!-- 終わり -->
+    <section class="page end-page">
+      <div class="text-area">
+        <div class="content">
+          <p>窓から入ってくる風が、冷たかった。</p>
+          <p>腹が減っていることに気づいた。身体は生きることをやめない、と思った。僕がどれだけ消えたいと思っても、身体は食べ物を求め、水を求め、睡眠を求める。それは裏切りのようでもあり、救いのようでもあった。</p>
+          <p>僕は眠りに落ちていった。</p>
+          <p>窓の外では、九月の終わりの風が吹いていた。枯れ始めた庭の草が、かすかに揺れていた。まるで誰かに手を振っているみたいに。あるいは、誰かを見送っているみたいに。</p>
+          <p>海鳴りは、止まなかった。</p>
+        </div>
+      </div>
+      <p class="end-mark">了</p>
+      <span class="page-number">19 / 19</span>
+    </section>
+
+  </main>
+
+  <script>
+    const container = document.getElementById('novelContainer');
+    const progressBar = document.getElementById('progressBar');
+    const pages = document.querySelectorAll('.page');
+    const totalPages = pages.length;
+
+    function updateProgress() {
+      const scrollTop = container.scrollTop;
+      const scrollHeight = container.scrollHeight - container.clientHeight;
+      const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+      progressBar.style.height = progress + '%';
+    }
+
+    container.addEventListener('scroll', updateProgress);
+    updateProgress();
+  </script>
+</body>
+</html>
