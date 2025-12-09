@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>文徒 BUNTO | those who read</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    :root {
+      --bg-paper: #f7f3e9;
+      --paper-edge: #ece3d4;
+      --ink: #202020;
+      --ink-soft: #4b4135;
+      --accent: #a68a5b;
+      --accent-light: #d1b78b;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
+      background: radial-gradient(circle at top left, #ffffff 0, var(--bg-paper) 50%, #f1e8db 100%);
+      color: var(--ink);
+      line-height: 1.8;
+    }
+
+    .page-frame {
+      min-height: 100vh;
+      padding: 32px 16px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .sheet {
+      max-width: 960px;
+      width: 100%;
+      background: var(--bg-paper);
+      border: 1px solid var(--paper-edge);
+      box-shadow:
+        0 12px 30px rgba(0, 0, 0, 0.08),
+        0 0 0 1px rgba(255, 255, 255, 0.6);
+      padding: 32px 20px 40px;
+      position: relative;
+    }
+
+    @media (min-width: 768px) {
+      .sheet {
+        padding: 40px 60px 56px;
+      }
+    }
+
+    /* 紙の端のアクセント */
+    .sheet::before,
+    .sheet::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border: 1px solid rgba(0, 0, 0, 0.03);
+      pointer-events: none;
+    }
+
+    .sheet::before {
+      transform: translate(4px, 4px);
+      opacity: 0.7;
+    }
+    .sheet::after {
+      transform: translate(-3px, -3px);
+      opacity: 0.5;
+    }
+
+    header {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 32px;
+      position: relative;
+      z-index: 1;
+    }
+
+    @media (min-width: 840px) {
+      header {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-end;
+      }
+    }
+
+    .logo-block {
+      border-left: 3px solid var(--ink-soft);
+      padding-left: 16px;
+    }
+
+    .logo-main {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 4px;
+    }
+
+    .logo-main .kanji {
+      font-family: "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP", serif;
+      font-size: 2.4rem;
+      letter-spacing: 0.12em;
+    }
+
+    .logo-main .roman {
+      font-size: 1.1rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+    }
+
+    .logo-sub {
+      font-size: 0.9rem;
+      letter-spacing: 0.18em;
+      text-transform: lowercase;
+      color: var(--ink-soft);
+      margin-bottom: 6px;
+    }
+
+    .logo-copy {
+      font-size: 0.9rem;
+      color: var(--ink-soft);
+    }
+
+    .tagline-block {
+      text-align: left;
+      font-size: 0.9rem;
+      color: var(--ink-soft);
+    }
+
+    @media (min-width: 840px) {
+      .tagline-block {
+        text-align: right;
+      }
+    }
+
+    .tagline-line {
+      display: inline-block;
+      border-bottom: 1px solid var(--accent-light);
+      padding-bottom: 4px;
+      margin-bottom: 6px;
+    }
+
+    .tagline-small {
+      font-size: 0.8rem;
+      color: #7f725f;
+    }
+
+    .ink-line {
+      border: none;
+      border-top: 1px solid rgba(0,0,0,0.12);
+      margin: 16px 0 24px;
+    }
+
+    .lead {
+      font-size: 1rem;
+      margin-bottom: 24px;
+      color: var(--ink-soft);
+    }
+
+    .lead strong {
+      font-weight: 600;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1.1fr;
+      gap: 32px;
+    }
+
+    @media (min-width: 960px) {
+      .layout {
+        grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+        align-items: flex-start;
+      }
+    }
+
+    section {
+      position: relative;
+      z-index: 1;
+    }
+
+    .section-title {
+      font-family: "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP", serif;
+      font-size: 1.05rem;
+      letter-spacing: 0.3em;
+      text-indent: 0.3em;
+      margin-bottom: 8px;
+      display: inline-block;
+      border-bottom: 1px solid var(--accent-light);
+      padding-bottom: 4px;
+    }
+
+    .section-subtitle {
+      font-size: 0.84rem;
+      color: #7f725f;
+      margin-bottom: 12px;
+    }
+
+    dl.basic-info {
+      margin: 0 0 16px;
+      font-size: 0.95rem;
+    }
+
+    .basic-info dt {
+      float: left;
+      clear: left;
+      width: 4em;
+      color: #7f725f;
+    }
+
+    .basic-info dd {
+      margin: 0 0 6px 4.5em;
+    }
+
+    .note {
+      font-size: 0.8rem;
+      color: #7f725f;
+      margin-top: 6px;
+    }
+
+    .box {
+      border: 1px solid rgba(0,0,0,0.08);
+      padding: 14px 14px 12px;
+      margin-bottom: 18px;
+      background: rgba(255,255,255,0.65);
+    }
+
+    .box-title {
+      font-size: 0.9rem;
+      letter-spacing: 0.16em;
+      text-indent: 0.16em;
+      margin-bottom: 4px;
+      color: var(--ink-soft);
+    }
+
+    .box-sub {
+      font-size: 0.8rem;
+      color: #7f725f;
+      margin-bottom: 8px;
+    }
+
+    ul {
+      margin: 0 0 4px 1.2em;
+      padding: 0;
+      font-size: 0.9rem;
+    }
+
+    li {
+      margin-bottom: 4px;
+    }
+
+    .inline-label {
+      font-size: 0.82rem;
+      color: #7f725f;
+      margin-right: 2px;
+    }
+
+    .fee-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 16px;
+      font-size: 0.95rem;
+    }
+
+    .fee-row span {
+      white-space: nowrap;
+    }
+
+    .schedule-list {
+      font-size: 0.9rem;
+      list-style: none;
+      margin-left: 0;
+    }
+
+    .schedule-list li::before {
+      content: "・";
+      margin-right: 4px;
+    }
+
+    .cta-block {
+      border-top: 1px solid rgba(0,0,0,0.12);
+      padding-top: 16px;
+      margin-top: 24px;
+    }
+
+    .cta-title {
+      font-size: 0.95rem;
+      letter-spacing: 0.25em;
+      text-indent: 0.25em;
+      margin-bottom: 6px;
+    }
+
+    .cta-text {
+      font-size: 0.85rem;
+      color: #7f725f;
+      margin-bottom: 12px;
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 9px 18px;
+      border-radius: 999px;
+      border: 1px solid var(--ink-soft);
+      background: linear-gradient(to bottom, #ffffff, #f3ebdd);
+      font-size: 0.85rem;
+      letter-spacing: 0.12em;
+      text-indent: 0.12em;
+      text-decoration: none;
+      color: var(--ink);
+      cursor: pointer;
+      transition: box-shadow 0.2s ease, transform 0.2s ease, background 0.2s ease;
+    }
+
+    .btn-primary {
+      border-color: var(--accent);
+      background: linear-gradient(to bottom, #fdf7ea, #f2e0c1);
+    }
+
+    .btn:hover {
+      box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+      transform: translateY(-1px);
+    }
+
+    .small-hint {
+      font-size: 0.78rem;
+      color: #7f725f;
+    }
+
+    /* フォーム（ダミー） */
+    .form-shell {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border: 1px dashed rgba(0,0,0,0.2);
+      background: rgba(255,255,255,0.5);
+      font-size: 0.83rem;
+    }
+
+    .form-shell p {
+      margin: 0 0 4px;
+    }
+
+    .form-shell code {
+      font-size: 0.8rem;
+      background: rgba(0,0,0,0.04);
+      padding: 1px 4px;
+      border-radius: 4px;
+    }
+
+    footer {
+      margin-top: 32px;
+      font-size: 0.78rem;
+      color: #9a8b76;
+      text-align: right;
+      position: relative;
+      z-index: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="page-frame">
+    <div class="sheet">
+      <header>
+        <div class="logo-block">
+          <div class="logo-main">
+            <div class="kanji">文徒</div>
+            <div class="roman">BUNTO</div>
+          </div>
+          <div class="logo-sub">those who read</div>
+          <div class="logo-copy">読み、語り、書く。&nbsp;文学の徒たちと過ごす時間。</div>
+        </div>
+        <div class="tagline-block">
+          <div class="tagline-line">創作文芸・同人誌のための「読む」イベント</div><br>
+          <span class="tagline-small">同じ本を読むのではなく、同じ場で「それぞれ読む」。</span>
+        </div>
+      </header>
+
+      <hr class="ink-line">
+
+      <p class="lead">
+        <strong>文徒（ぶんと）</strong>は、創作文芸・同人誌の作者と、読む人々が集まり、その場で持ち寄った本を読み、言葉を交して味わうための小さなイベントです。<br>
+        文学フリマのように「並べて売る」のではなく、<strong>「持ち寄って読み合う」こと</strong>に主眼を置きます。
+      </p>
+
+      <div class="layout">
+        <!-- 左カラム：イベント概要 -->
+        <section>
+          <h2 class="section-title">開催概要</h2>
+          <p class="section-subtitle">※初回開催につき、詳細は決まり次第更新します。</p>
+
+          <dl class="basic-info">
+            <dt>日時</dt>
+            <dd>2026年1月17日 14:00～17:00頃</dd>
+            <dt>会場</dt>
+            <dd>カフェKaffa（カッファ） JR山手線目黒駅徒歩2分</dd>
+            <dt>形式</dt>
+            <dd>出展者・一般参加者ともに、同じ空間で「読む」を共有する少人数制イベントです</dd>
+          </dl>
+
+          <div class="box">
+            <div class="box-title">タイムテーブル（基本サイクル）</div>
+            <div class="box-sub">以下を繰り返します。</div>
+            <ul class="schedule-list">
+              <li>30分：<strong>Reading Time</strong>（回し読み・黙読）</li>
+              <li>15分：<strong>Oral Time</strong>（声に出して読む・言葉を交わす）</li>
+              <li>（休憩・出入り自由）</li>
+            </ul>
+            <p class="note">※同じ本を揃えて読む読書会ではありません。<br>
+              &nbsp;&nbsp;各自が作り持ち寄った本を、その場で選んで読みます。</p>
+          </div>
+
+          <div class="box">
+            <div class="box-title">参加費</div>
+            <div class="fee-row">
+              <span><span class="inline-label">出展者</span>1,000円</span>
+              <span><span class="inline-label">一般参加</span>1,000円</span>
+            </div>
+            <p class="note">※コーヒー１杯つき<br>
+              ※いずれも会場費・運営費として。現地で現金にてお支払いいただきます。</p>
+          </div>
+        </section>
+
+        <!-- 右カラム：出展・参加要項＋申込 -->
+        <section>
+          <h2 class="section-title">募集要項</h2>
+          <p class="section-subtitle">出展者・一般参加者とも、人数に限りがあります。</p>
+
+          <div class="box">
+            <div class="box-title">出展者の方へ</div>
+            <div class="box-sub">創作文芸・エッセイ・ZINE・個人誌など、自作の本をお持ちください。</div>
+            <ul>
+              <li>会場で<strong>回し読みできるように、各タイトル数部ご用意</strong>ください（少部数で構いません）。</li>
+              <li>判型・ページ数・装丁は自由。コピー本・ZINE・リトルプレスなど歓迎です。</li>
+              <li>読み時間中は、来場者が自由に手に取り、その場で読めるよう机に並べます。</li>
+              <li><strong>物販（販売）も可能</strong>ですが、主眼は「読むこと」にあります。</li>
+              <li>出展者も他の本を読み、オーラルタイムで一節をシェアしていただきます。</li>
+            </ul>
+            <p class="note">商業誌・商業アンソロジーのみの出展はご遠慮ください。<br>
+              自主制作／同人活動の延長線上にある本を想定しています。</p>
+          </div>
+
+          <div class="box">
+            <div class="box-title">一般参加の方へ</div>
+            <div class="box-sub">「読むこと」が好きな方であれば、執筆経験の有無は問いません。</div>
+            <ul>
+              <li>会場に並べられた本の中から、気になる1冊を手に取り、30分じっくりと読んでみてください。</li>
+              <li>オーラルタイムでは、「心に残った一節」や「なぜその本を選んだか」を、短く共有します。</li>
+              <li>原則として批評会ではありません。<strong>作品と出会った、その瞬間の手触り</strong>を話す場です。</li>
+              <li>読み終えた本は、次の人のために元の場所へお戻しください。</li>
+            </ul>
+            <p class="note">本を持たずに来ていただいても構いません。<br>
+              気に入った本があれば、出展者ブースで購入できる場合もあります。</p>
+          </div>
+
+          <div class="cta-block">
+            <div class="cta-title">出展・参加お申し込み</div>
+            <p class="cta-text">
+              文徒 BUNTO｜those who read を、最初期から一緒に育ててくださる方をゆるやかに募集します。<br>
+              出展希望／一般参加希望とも、mailまたはXのDMにてお申込みください。
+            </p>
+
+            <div class="button-row">
+              <!-- リンク先は運用時に差し替え -->
+               mail: atsu4honda@gmail.com
+            </div>
+            <div class="button-row">
+              <!-- リンク先は運用時に差し替え -->
+               X: <a href="https://x.com/shirubiyanke">@shirubiyanke</a>
+            </div>
+            <p class="small-hint">※現時点ではティザー段階のため、当日のプログラム等は変更となる場合があります。</p>
+
+            <!-- ダミー：フォーム設置ガイド
+            <div id="entry" class="form-shell">
+              <p>ここに、実際のフォームやリンクを設置してください：</p>
+              <p>
+                例）<code>&lt;form action="申し込み受付URL" method="post"&gt;...&lt;/form&gt;</code><br>
+                例）<code>&lt;a href="GoogleフォームのURL"&gt;Googleフォームから申し込む&lt;/a&gt;</code>
+              </p>
+            </div>-->
+          </div>
+        </section>
+      </div>
+
+      <footer>
+        文徒 BUNTO｜those who read<br>
+        読み、語り、書く。&nbsp;―&nbsp;read, talk, write.
+      </footer>
+    </div>
+  </div>
+</body>
+</html>
